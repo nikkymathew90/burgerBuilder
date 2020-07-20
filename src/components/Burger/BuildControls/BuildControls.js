@@ -31,7 +31,7 @@ const buildControls = props => (
         disabled={!props.purchasable}
         onClick={props.ordered}
       >
-        ORDER NOW
+        {props.isAuthenticated ? "ORDER NOW" : "SIGNIN TO ORDER"}
       </button>
     </div>
   </Aux>

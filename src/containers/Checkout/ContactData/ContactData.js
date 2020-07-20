@@ -14,7 +14,7 @@ class ContactData extends Component {
     orderForm: {
       Name: {
         elementType: "input",
-        elementCongif: {
+        elementConfig: {
           type: "text",
           placeholder: "Your Name"
         },
@@ -27,7 +27,7 @@ class ContactData extends Component {
       },
       street: {
         elementType: "input",
-        elementCongif: {
+        elementConfig: {
           type: "text",
           placeholder: "Street"
         },
@@ -40,7 +40,7 @@ class ContactData extends Component {
       },
       zipCode: {
         elementType: "input",
-        elementCongif: {
+        elementConfig: {
           type: "text",
           placeholder: "Postal Code"
         },
@@ -55,7 +55,7 @@ class ContactData extends Component {
       },
       country: {
         elementType: "input",
-        elementCongif: {
+        elementConfig: {
           type: "text",
           placeholder: "Country"
         },
@@ -68,7 +68,7 @@ class ContactData extends Component {
       },
       email: {
         elementType: "input",
-        elementCongif: {
+        elementConfig: {
           type: "email",
           placeholder: "Email"
         },
@@ -81,7 +81,7 @@ class ContactData extends Component {
       },
       deliverMode: {
         elementType: "select",
-        elementCongif: {
+        elementConfig: {
           options: [
             { value: "fastest", displayValue: "Fastest" },
             { value: "cheapest", displayValue: "Cheapest" }
@@ -107,10 +107,11 @@ class ContactData extends Component {
     const order = {
       ingredients: this.props.ings,
       price: this.props.price,
-      formData: formData
+      formData: formData,
+      userId: this.props.userId
     };
 
-    this.props.onOrderBurger(order);
+    this.props.onOrderBurger(order, this.props.token);
   };
 
   checkValidity(value, rule) {
@@ -125,6 +126,16 @@ class ContactData extends Component {
 
     if (rule.maxLength) {
       isValid = value.trim().length <= rule.maxLength && isValid;
+    }
+
+    if (rule.isEmail) {
+      const pattern = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+      isValid = pattern.test(value) && isValid;
+    }
+
+    if (rule.isNumeric) {
+      const pattern = /^\d+$/i;
+      isValid = pattern.test(value) && isValid;
     }
 
     return isValid;
@@ -165,7 +176,7 @@ class ContactData extends Component {
           <Input
             key={formElement.id}
             elementType={formElement.config.elementType}
-            elementCongif={formElement.config.elementCongif}
+            elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
             changed={event => this.inputChangeHandler(event, formElement.id)}
             inValid={!formElement.config.valid}
@@ -198,13 +209,16 @@ const mapStateToProps = state => {
   return {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
-    loading: state.order.loading
+    loading: state.order.loading,
+    token: state.auth.token,
+    userId: state.auth.userId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrderBurger: orderData => dispatch(actions.purchaseBurger(orderData))
+    onOrderBurger: (orderData, token) =>
+      dispatch(actions.purchaseBurger(orderData, token))
   };
 };
 

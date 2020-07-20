@@ -12,7 +12,7 @@ const input = props => {
       inputElement = (
         <input
           className={inputClasses.join(" ")}
-          {...props.elementCongif}
+          {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
         />
@@ -26,7 +26,7 @@ const input = props => {
           value={props.value}
           onChange={props.changed}
         >
-          {props.elementCongif.options.map(option => (
+          {props.elementConfig.options.map(option => (
             <option key={option.value} value={option.value}>
               {option.displayValue}
             </option>
@@ -39,7 +39,7 @@ const input = props => {
       inputElement = (
         <textarea
           className={inputClasses.join(" ")}
-          {...props.elementCongif}
+          {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
         />
@@ -50,7 +50,7 @@ const input = props => {
       inputElement = (
         <input
           className={inputClasses.join(" ")}
-          {...props.elementCongif}
+          {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
         />
