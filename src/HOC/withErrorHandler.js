@@ -14,10 +14,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
     };
 
     componentWillUnmount() {
-      console.log(
-        "[Burger Builder Component willunmount]" + this.reqInterceptor,
-        this.resInterceptor
-      );
       axios.interceptors.request.eject(this.reqInterceptor);
       axios.interceptors.response.eject(this.resInterceptor);
     }

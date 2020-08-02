@@ -6,6 +6,7 @@ import Spinner from "./../../../components/UI/Spinner/Spinner";
 import Input from "./../../../components/UI/Input/Input";
 import withErrorHandler from "./../../../HOC/withErrorHandler";
 import * as actions from "./../../../store/actions/index";
+import { checkValidity } from "./../../../shared/utilities";
 
 import { connect } from "react-redux";
 
@@ -114,39 +115,12 @@ class ContactData extends Component {
     this.props.onOrderBurger(order, this.props.token);
   };
 
-  checkValidity(value, rule) {
-    let isValid = true;
-    if (rule.required) {
-      isValid = value !== "" && isValid;
-    }
-
-    if (rule.minLength) {
-      isValid = value.trim().length >= rule.minLength && isValid;
-    }
-
-    if (rule.maxLength) {
-      isValid = value.trim().length <= rule.maxLength && isValid;
-    }
-
-    if (rule.isEmail) {
-      const pattern = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rule.isNumeric) {
-      const pattern = /^\d+$/i;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
-
   inputChangeHandler = (event, inputIdentifier) => {
     const updatedOrderForm = { ...this.state.orderForm };
     const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
     updatedFormElement.value = event.target.value;
     updatedFormElement.touched = true;
-    updatedFormElement.valid = this.checkValidity(
+    updatedFormElement.valid = checkValidity(
       updatedFormElement.value,
       updatedFormElement.validation
     );
@@ -155,8 +129,6 @@ class ContactData extends Component {
     for (let inputIdentifier in updatedOrderForm) {
       isFormValid = updatedOrderForm[inputIdentifier].valid && isFormValid;
     }
-
-    console.log(isFormValid);
     updatedOrderForm[inputIdentifier] = updatedFormElement;
     this.setState({ orderForm: updatedOrderForm, isFormValid: isFormValid });
   };

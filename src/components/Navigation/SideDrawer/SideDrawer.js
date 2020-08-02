@@ -14,7 +14,7 @@ const sidedrawer = props => {
   return (
     <Aux>
       <Backdrop show={props.show} clickClose={props.closed} />
-      <div className={attachedClasses.join(" ")}>
+      <div className={attachedClasses.join(" ")} onClick={props.closed}>
         <Logo />
         <nav>
           <NavigationItems isAuthenticated={props.isAuthenticated} />

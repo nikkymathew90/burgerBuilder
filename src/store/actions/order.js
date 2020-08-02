@@ -67,7 +67,6 @@ export const fetchOrdersSuccess = orders => {
 export const fetchOrders = (token, userId) => {
   return dispatch => {
     dispatch(fetchOrdersStart());
-    debugger;
     const queryParams =
       "?auth=" + token + '&orderBy="userId"&equalTo="' + userId + '"';
     axios
@@ -82,7 +81,6 @@ export const fetchOrders = (token, userId) => {
         console.log("[res]", res.data);
       })
       .catch(error => {
-        debugger;
         dispatch(fetchOrderFail(error));
       });
   };

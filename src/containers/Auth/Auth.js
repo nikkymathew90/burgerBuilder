@@ -6,6 +6,7 @@ import * as actions from "./../../store/actions/index";
 import { connect } from "react-redux";
 import Spinner from "./../../components/UI/Spinner/Spinner";
 import { Redirect } from "react-router-dom";
+import { checkValidity } from "./../../shared/utilities";
 
 class Auth extends Component {
   state = {
@@ -56,7 +57,7 @@ class Auth extends Component {
         ...this.state.controls[inputIdentifier],
         value: event.target.value,
         touched: true,
-        valid: this.checkValidity(
+        valid: checkValidity(
           event.target.value,
           this.state.controls[inputIdentifier].validation
         )
@@ -67,9 +68,6 @@ class Auth extends Component {
     for (let inputIdentifier in updatedAuthForm) {
       isFormValid = updatedAuthForm[inputIdentifier].valid && isFormValid;
     }
-
-    console.log(isFormValid);
-    //updatedAuthForm[inputIdentifier] = updatedFormElement;
     this.setState({ controls: updatedAuthForm, isFormValid: isFormValid });
   };
 
@@ -88,33 +86,6 @@ class Auth extends Component {
       return { isSignup: !prevState.isSignup };
     });
   };
-
-  checkValidity(value, rule) {
-    let isValid = true;
-    if (rule.required) {
-      isValid = value !== "" && isValid;
-    }
-
-    if (rule.minLength) {
-      isValid = value.trim().length >= rule.minLength && isValid;
-    }
-
-    if (rule.maxLength) {
-      isValid = value.trim().length <= rule.maxLength && isValid;
-    }
-
-    if (rule.isEmail) {
-      const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rule.isNumeric) {
-      const pattern = /^\d+$/i;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
 
   render() {
     const formElements = [];

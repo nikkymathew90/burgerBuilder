@@ -12,6 +12,7 @@
   display: flex;
   align-items: center;
   height: 100%;
+  padding: 10px 0;
 }
 
 .NavigationItem a {
@@ -45,6 +46,7 @@
     width: auto;
     align-items: center;
     height: 100%;
+    padding: 0;
   }
 
   .NavigationItem a {
