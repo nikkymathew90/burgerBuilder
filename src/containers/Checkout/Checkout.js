@@ -5,7 +5,7 @@ import ContactData from "./../../containers/Checkout/ContactData/ContactData";
 import { connect } from "react-redux";
 import * as actions from "./../../store/actions";
 
-class Checkout extends Component {
+export class Checkout extends Component {
   checkoutCanceled = () => {
     this.props.history.goBack();
   };
